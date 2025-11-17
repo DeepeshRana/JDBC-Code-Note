@@ -1,0 +1,82 @@
+package in.java.deepesh;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
+
+import in.java.utility.DBUtil;
+
+public class DateApp {
+
+	private static final String SQL_INSERT_QUERY = "Insert into users(`username`,`dateofbirth`) values(?,?)";
+
+	public static void main(String[] args) {
+
+		Connection connection = null;
+
+		PreparedStatement preparedStatement = null;
+
+		int rowCount = 0;
+
+		try {
+			connection = DBUtil.getDBConection();
+
+			if (connection != null) {
+				preparedStatement = connection.prepareStatement(SQL_INSERT_QUERY);
+			}
+
+			Scanner scanner = new Scanner(System.in);
+
+			if (preparedStatement != null && scanner != null) {
+
+				System.out.println("Enther the name of student");
+
+				String uName = scanner.next();
+
+				System.out.println("Enter the Birth Date of student (dd-MM-yyy) ::");
+
+				String uDate = scanner.next();
+
+				preparedStatement.setString(1, uName);
+				preparedStatement.setDate(2, convertToSQLDate(uDate));
+
+				rowCount = preparedStatement.executeUpdate();
+			}
+
+			if (rowCount == 0) {
+				System.out.println("Error occur");
+			} else {
+				System.out.println("Done Operation :: " + rowCount);
+			}
+
+		} catch (IOException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.cleanUpResources(null, preparedStatement, connection);
+		}
+
+	}
+
+	private static Date convertToSQLDate(String uDate) throws ParseException {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+		java.util.Date utilDate = sdf.parse(uDate);
+
+		long inputeMs = utilDate.getTime();
+
+		java.sql.Date sqlDate = new java.sql.Date(inputeMs);
+
+		return sqlDate;
+	}
+
+}

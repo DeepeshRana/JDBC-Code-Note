@@ -1,0 +1,53 @@
+package in.java.deepesh;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
+
+public class MainApp {
+	public static void main(String[] args) {
+
+		try {
+
+			//1. Established Connection
+			FileInputStream fileInputStream = new FileInputStream(
+					"C:\\Project\\JAVA WORKSPACE\\JdbcApp01\\src\\in\\java\\properties\\database.properties");
+			Properties properties = new Properties();
+			properties.load(fileInputStream);
+
+			String url = properties.getProperty("url");
+			String username = properties.getProperty("username");
+			String password = properties.getProperty("password");
+			Connection connection = DriverManager.getConnection(url, username, password);
+			System.out.println("Connection established for :: " + url);
+			System.out.println("Connection ::" + connection.getClass().getName());
+			
+			
+			//2. Create statement object.
+			Statement statement = connection.createStatement();
+			System.out.println("\nStatement object created...");
+			
+			
+			//3. Execute Query
+			String sqlQuery = "select * from bank_info";
+			ResultSet resultSet = statement.executeQuery(sqlQuery);
+			System.out.println("\nResultSet object created...");
+
+			
+			//4. Process the result
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}

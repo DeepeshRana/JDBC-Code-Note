@@ -1,0 +1,10 @@
+package in.java.deepesh;
+
+import java.text.SimpleDateFormat;
+
+public class MainApp {
+	public static void main(String[] args) {
+		String userInput = "12-1-2024";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyy");
+	}
+}

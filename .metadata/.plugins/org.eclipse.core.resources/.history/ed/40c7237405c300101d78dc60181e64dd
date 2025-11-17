@@ -1,0 +1,16 @@
+package in.java.deepesh.factory;
+
+import in.java.deepesh.controller.IStudentController;
+
+public class StudentControllerFactory {
+
+	private static IStudentController controller = null;
+
+	public static IStudentController getStudentController() {
+		if (controller == null) {
+			controller = new StudentControllerImpl();
+		}
+
+		return controller;
+	}
+}

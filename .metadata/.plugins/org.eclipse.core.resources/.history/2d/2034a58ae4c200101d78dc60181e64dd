@@ -1,0 +1,59 @@
+package in.java.deepesh;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+import in.java.utility.DBUtil;
+
+public class DeleteApp {
+
+	public static void main(String[] args) {
+
+		Connection connection = null;
+
+		Statement statement = null;
+
+		int rowCount = 0;
+
+		try {
+			connection = DBUtil.getDBConection();
+
+			if (connection != null) {
+				statement = connection.createStatement();
+			}
+
+			if (statement != null) {
+
+				Scanner scanner = new Scanner(System.in);
+
+				String SQL_INSERT_QUERY = null;
+
+				if (scanner != null) {
+					System.out.println("Enter the Student Id");
+
+					int sId = scanner.nextInt();
+
+					SQL_INSERT_QUERY = "Delete from student where sid=" + sId + "";
+
+				}
+
+				rowCount = statement.executeUpdate(SQL_INSERT_QUERY);
+			}
+			if (rowCount == 0) {
+				System.out.println("Failure in Delete");
+			} else {
+				System.out.println("Row Delete ::" + rowCount);
+				System.out.println("Recored Delete successfully");
+			}
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.cleanUpResources(null, statement, connection);
+		}
+
+	}
+
+}
